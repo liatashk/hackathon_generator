@@ -26,7 +26,8 @@ def create_sentence(dict) -> ByteString:
         str=str+x+":"+dict.get(x)+" "
     return str
 
-
-# print(rand_select_elm(read_list_from_file("who.txt"), read_list_from_file("what.txt"), read_list_from_file("when.txt")))
-print(create_sentence(
-    rand_select_elm(read_list_from_file("who.txt"), read_list_from_file("what.txt"), read_list_from_file("when.txt"))))
+i = 1
+while i < 20:
+    print(create_sentence(
+        rand_select_elm(read_list_from_file("who.txt"), read_list_from_file("what.txt"), read_list_from_file("when.txt"))))
+    i = i + 1

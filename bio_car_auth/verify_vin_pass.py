@@ -1,7 +1,5 @@
-from typing import List
-from typing import Dict
-
-def read_list_from_file(file_name) -> Dict:
+#!/usr/bin/env python3
+def read_list_from_file(file_name):
     f = open(file_name)
     list = []
     dict={}
@@ -17,13 +15,11 @@ def read_list_from_file(file_name) -> Dict:
 
 def is_verified(vin, password) -> bool:
     dict = read_list_from_file("vin_pass.txt")
-    print(dict)
+    #print(dict)
     ans=False
     if(dict.get(vin)== password):
         ans=True
     else:
         ans=False
-    print(ans)
     return(ans)
 
-is_verified("77","blabla")

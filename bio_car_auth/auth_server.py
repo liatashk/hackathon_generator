@@ -5,6 +5,8 @@ import time
 #from urllib.parse import parse_qs
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from send_to_canvas import start_engine
+from verify_vin_pass import is_verified
+import json
 
 
 class MyHandler(BaseHTTPRequestHandler):
@@ -47,9 +49,11 @@ class MyHandler(BaseHTTPRequestHandler):
             content_len = int(self.headers.get('Content-Length'))
             if content_len > 0:
                 post_body = self.rfile.read(content_len)
-                print(post_body)
-                #TODO Check vin + password before call to respond
-                isOk = True
+                #print(post_body)
+                params = json.loads((post_body).decode("utf-8"))
+                if "cert" in params and "vin" in params and is_verified(params["vin"], params["cert"]):
+                    #TODO Check vin + password before call to respond
+                    isOk = True
         
         if isOk:
             self.respond({'status': 200, 'isOk' : isOk})

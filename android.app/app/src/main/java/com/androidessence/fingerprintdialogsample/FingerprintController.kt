@@ -105,7 +105,12 @@ class FingerprintController(
         }
     }
 
-
+    fun getIpFromFile(): String {
+        if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String []{ Manifest.permission.READ_EXTERNAL_STORAGE }, 0);
+        }
+        = File("/sdcard/config.txt").readText(Charsets.UTF_8)
+    }
 
     override fun onAuthenticationSucceeded(result: FingerprintManagerCompat.AuthenticationResult?) {
         errorText.removeCallbacks(resetErrorTextRunnable)
@@ -117,7 +122,8 @@ class FingerprintController(
         val thread = Thread(Runnable {
             try {
                 khttp.put(
-                        url = "http://10.0.75.1:9200/bio/_doc/1",
+                        url = getIpFromFile();
+                        //url = "http://10.0.75.1:9200/bio/_doc/1",
                         json = mapOf("user" to "shmulik", "auth" to "valid"))
             } catch (e: Exception) {
                 println(e)

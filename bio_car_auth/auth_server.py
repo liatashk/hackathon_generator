@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 import time
 from http.server import BaseHTTPRequestHandler, HTTPServer
+from send_to_canvas import start_engine
+
 
 PORT_NUMBER = 80
-HOST_NAME = 'localhost'
+HOST_NAME = '192.168.100.198'
 
 
 class MyHandler(BaseHTTPRequestHandler):
@@ -24,7 +26,9 @@ class MyHandler(BaseHTTPRequestHandler):
 
     def handle_http(self, status_code, path):
         self.send_response(status_code)
+        content = ""
         if status_code == 200:
+            start_engine()
             self.send_header('Content-type', 'text/html')
             self.end_headers()
             content = '''
@@ -33,6 +37,9 @@ class MyHandler(BaseHTTPRequestHandler):
             <p>You accessed path: {}</p>
             </body></html>
             '''.format(path)
+            return bytes(content, 'UTF-8')
+        else :
+            content= "bad request"
             return bytes(content, 'UTF-8')
 
     def respond(self, opts):

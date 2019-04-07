@@ -10,8 +10,10 @@
 
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="39dp"
+        android:layout_width="442dp"
+        android:layout_height="100dp"
+        android:layout_marginLeft="32dp"
+        android:background="@color/colorPrimary"
         android:text="@string/authenticate_instructions"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -25,6 +27,7 @@
         android:id="@+id/imageView"
         android:layout_width="519dp"
         android:layout_height="637dp"
+        android:background="@color/colorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:srcCompat="@drawable/car2"
         tools:ignore="MissingConstraints"

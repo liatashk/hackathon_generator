@@ -1,16 +1,11 @@
 #!/usr/bin/env python3
 import sys
 import time
-#from cgi import parse_header, parse_multipart
-#from urllib.parse import parse_qs
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from send_to_canvas import start_engine
 from verify_vin_pass import is_verified
-
 import json
 import os
-# sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), os.pardir))
-# print(sys.path)
 import car_filter
 import subprocess
 
@@ -29,19 +24,6 @@ class MyHandler(BaseHTTPRequestHandler):
             self.respond(paths[self.path])
         else:
             self.respond({'status': 500})
-#             
-#     def parse_POST(self):
-#         ctype, pdict = parse_header(self.headers['content-type'])
-#         if ctype == 'multipart/form-data':
-#             postvars = parse_multipart(self.rfile, pdict)
-#         elif ctype == 'application/x-www-form-urlencoded':
-#             length = int(self.headers['content-length'])
-#             postvars = parse_qs(
-#                     self.rfile.read(length), 
-#                     keep_blank_values=1)
-#         else:
-#             postvars = {}
-#         return postvars
             
     def do_POST(self):
         paths = {
@@ -139,19 +121,11 @@ if __name__ == "__main__":
     if len(sys.argv) < 2:
         usage()
         exit(1)
-    # car_process = run_cmd("python3 car_filter.py")
-    # car_process = os.system("python3 car_filter.py &")
-    # proc = subprocess.Popen(['ls'], shell=True)
-    proc = subprocess.Popen(['python3', 'car_filter.py'], shell=False)
 
+    proc = subprocess.Popen(['python3', 'car_filter.py'], shell=False)
     pid = proc.pid # <--- access `pid` attribute to get the pid of the child process.
 
-    # proc.terminate()
-    print("os.system")
-    # print(car_process)
     if len(sys.argv) >= 3:
         runServer(sys.argv[1], sys.argv[2])
     else:
         runServer(sys.argv[1])
-
-#     car_process[1].terminate()

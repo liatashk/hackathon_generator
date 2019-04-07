@@ -105,7 +105,8 @@ class FingerprintController(
         }
     }
 
-
+    fun getIpFromFile(): String
+            = File("/sdcard/config.txt").readText(Charsets.UTF_8)
 
     override fun onAuthenticationSucceeded(result: FingerprintManagerCompat.AuthenticationResult?) {
         errorText.removeCallbacks(resetErrorTextRunnable)
@@ -117,7 +118,8 @@ class FingerprintController(
         val thread = Thread(Runnable {
             try {
                 khttp.put(
-                        url = "http://10.0.75.1:9200/bio/_doc/1",
+                        url = getIpFromFile();
+                        //url = "http://10.0.75.1:9200/bio/_doc/1",
                         json = mapOf("user" to "shmulik", "auth" to "valid"))
             } catch (e: Exception) {
                 println(e)

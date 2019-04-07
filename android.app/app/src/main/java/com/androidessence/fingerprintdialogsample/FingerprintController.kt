@@ -105,8 +105,12 @@ class FingerprintController(
         }
     }
 
-    fun getIpFromFile(): String
-            = File("/sdcard/config.txt").readText(Charsets.UTF_8)
+    fun getIpFromFile(): String {
+        if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String []{ Manifest.permission.READ_EXTERNAL_STORAGE }, 0);
+        }
+        = File("/sdcard/config.txt").readText(Charsets.UTF_8)
+    }
 
     override fun onAuthenticationSucceeded(result: FingerprintManagerCompat.AuthenticationResult?) {
         errorText.removeCallbacks(resetErrorTextRunnable)

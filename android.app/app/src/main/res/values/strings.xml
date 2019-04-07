@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">BIO CAR AUTH</string>
+    <string name="app_name">AuthentCar</string>
     <string name="action_settings">Settings</string>
     <string name="authenticate_instructions">Click the fingerprint button below to authenticate yourself.</string>
     <string name="cancel">Close the app</string>

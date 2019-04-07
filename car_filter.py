@@ -13,8 +13,7 @@ def arguments_declaration():
                                                  'How to: run python3 car_filter.py\n'
                                                  'Implemantation: the code "block" eng by send id 1EF with data AAAAAAAAAAAAAAAA on freq 0.001s')
     arg = parser.parse_args()
-
-if __name__ == '__main__':
+def runner():
     arguments_declaration()
 
     can.rc['interface'] = 'socketcan_native'
@@ -33,3 +32,5 @@ if __name__ == '__main__':
         bus.send(msg)
         time.sleep(0.001)
         # print("in loop")
+if __name__ == '__main__':
+    runner()

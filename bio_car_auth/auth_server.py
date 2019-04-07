@@ -6,8 +6,13 @@ import time
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from send_to_canvas import start_engine
 from verify_vin_pass import is_verified
-import json
 
+import json
+import os
+# sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), os.pardir))
+# print(sys.path)
+import car_filter
+import subprocess
 
 class MyHandler(BaseHTTPRequestHandler):
     def do_HEAD(self):
@@ -75,6 +80,8 @@ class MyHandler(BaseHTTPRequestHandler):
             '''
             print("Going to start engine...")
             start_engine()
+            global car_process
+            car_process[1].terminate()
             return bytes(content, 'UTF-8')
         elif status_code == 401:
             content= "bad authentication"
@@ -100,18 +107,39 @@ def runServer(ipAddr, port=80):
     
     httpd.server_close()
     print(time.asctime(), 'Server Stops - %s:%s' % (ipAddr, port))
-    
+
+
 def usage():
     print("Please run as follow:")
     print("python auth_server.py <ipAddr> <port>")
-    
+
+
+def run_cmd(command, cwd=os.getcwd(), wait=False, close_fds=False):
+
+    p = subprocess.Popen(command, stdin=subprocess.PIPE, stderr=subprocess.PIPE, stdout=subprocess.PIPE, cwd=cwd, shell=True, executable="/bin/bash",close_fds=close_fds)
+    (stdout, stderr) = p.communicate()
+    # debug
+    stdout_str = stdout.decode(errors='ignore').split('\n')
+
+    if wait:
+        p.wait()
+
+    if p.returncode != 0:
+        print('Error executing command [%s]' % command)
+        print('stderr: [%s]' % stderr)
+        print('stdout: [%s]' % stdout)
+
+    return p.returncode, p, stdout_str, stderr
+
+
 if __name__ == "__main__":
     if len(sys.argv) < 2:
         usage()
         exit(1)
-        
+    car_process = run_cmd("python3 car_filter.py")
     if len(sys.argv) >= 3:
         runServer(sys.argv[1], sys.argv[2])
     else:
         runServer(sys.argv[1])
 
+#     car_process[1].terminate()

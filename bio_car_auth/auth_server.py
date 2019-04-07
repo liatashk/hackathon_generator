@@ -80,8 +80,10 @@ class MyHandler(BaseHTTPRequestHandler):
             '''
             print("Going to start engine...")
             start_engine()
-            global car_process
-            car_process[1].terminate()
+            # global car_process
+            # car_process[1].terminate()
+            global proc
+            proc.terminate()
             return bytes(content, 'UTF-8')
         elif status_code == 401:
             content= "bad authentication"
@@ -125,6 +127,7 @@ def run_cmd(command, cwd=os.getcwd(), wait=False, close_fds=False):
         p.wait()
 
     if p.returncode != 0:
+
         print('Error executing command [%s]' % command)
         print('stderr: [%s]' % stderr)
         print('stdout: [%s]' % stdout)
@@ -136,7 +139,16 @@ if __name__ == "__main__":
     if len(sys.argv) < 2:
         usage()
         exit(1)
-    car_process = run_cmd("python3 car_filter.py")
+    # car_process = run_cmd("python3 car_filter.py")
+    # car_process = os.system("python3 car_filter.py &")
+    # proc = subprocess.Popen(['ls'], shell=True)
+    proc = subprocess.Popen(['python3', 'car_filter.py'], shell=False)
+
+    pid = proc.pid # <--- access `pid` attribute to get the pid of the child process.
+
+    # proc.terminate()
+    print("os.system")
+    # print(car_process)
     if len(sys.argv) >= 3:
         runServer(sys.argv[1], sys.argv[2])
     else:
